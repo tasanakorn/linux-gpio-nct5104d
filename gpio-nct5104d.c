@@ -23,8 +23,11 @@
 #define SIO_LDSEL		0x07	/* Logical device select */
 #define SIO_CHIPID		0x20	/* Chaip ID (2 bytes) */
 #define SIO_GPIO_ENABLE	0x30	/* GPIO enable */
+#define SIO_GPIO1_MODE		0xE0	/* GPIO1 Mode OpenDrain/Push-Pull */
+#define SIO_GPIO2_MODE		0xE1	/* GPIO2 Mode OpenDrain/Push-Pull */
 
 #define SIO_LD_GPIO		0x07	/* GPIO logical device */
+#define SIO_LD_GPIO_MODE	0x0F	/* GPIO mode control device */
 #define SIO_UNLOCK_KEY		0x87	/* Key to enable Super-I/O */
 #define SIO_LOCK_KEY		0xAA	/* Key to disable Super-I/O */
 
@@ -353,6 +356,10 @@ static int __init nct5104d_find(int addr, struct nct5104d_sio *sio)
 		nct5104d_names[sio->type],
 		(unsigned int) addr,
 		(int) superio_inw(addr, SIO_CHIPID));
+
+        superio_select(sio->addr, SIO_LD_GPIO_MODE);
+        superio_outb(sio->addr, SIO_GPIO1_MODE, 0x0);
+        superio_outb(sio->addr, SIO_GPIO2_MODE, 0x0);
 
 err:
 	superio_exit(addr);
