@@ -14,6 +14,7 @@
 #include <linux/platform_device.h>
 #include <linux/io.h>
 #include <linux/gpio.h>
+#include <linux/version.h>
 
 #define DRVNAME "gpio-nct5104d"
 
@@ -272,7 +273,11 @@ static int nct5104d_gpio_probe(struct platform_device *pdev)
 	for (i = 0; i < data->nr_bank; i++) {
 		struct nct5104d_gpio_bank *bank = &data->bank[i];
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,5,0)
+		bank->chip.parent = &pdev->dev;
+#else
 		bank->chip.dev = &pdev->dev;
+#endif
 		bank->data = data;
 
 		err = gpiochip_add(&bank->chip);
