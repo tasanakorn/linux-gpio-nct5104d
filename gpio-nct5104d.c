@@ -34,6 +34,7 @@
 
 #define SIO_NCT5104D_ID					0x1061	/* Chip ID */
 #define SIO_PCENGINES_APU_NCT5104D_ID	0xc452	/* Chip ID */
+#define SIO_PCENGINES_APU2_NCT5104D_ID	0xc453	/* Chip ID */
 
 enum chips { nct5104d };
 
@@ -345,6 +346,7 @@ static int __init nct5104d_find(int addr, struct nct5104d_sio *sio)
 	switch (devid) {
 	case SIO_NCT5104D_ID:
 	case SIO_PCENGINES_APU_NCT5104D_ID:
+	case SIO_PCENGINES_APU2_NCT5104D_ID:
 		sio->type = nct5104d;
 		/* enable GPIO0 and GPIO1 */
 		superio_select(addr, SIO_LD_GPIO);
